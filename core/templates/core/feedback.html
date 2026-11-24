@@ -1,0 +1,91 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <h2 class="mb-4 text-center">
+        Student Feedback NLP System
+    </h2>
+
+    <!-- FEEDBACK FORM -->
+
+    <div class="card p-4 shadow">
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button type="submit" class="btn btn-primary">
+                Submit Feedback
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- FEEDBACK LIST -->
+
+    <div class="mt-5">
+
+        <h3>All Feedbacks</h3>
+
+        {% for feedback in feedbacks %}
+
+            <div class="card mt-3 shadow-sm">
+
+                <div class="card-body">
+
+                    <h5>
+                        {{ feedback.student_name }}
+                    </h5>
+
+                    <p>
+                        {{ feedback.message }}
+                    </p>
+
+                    {% if feedback.sentiment == 'Positive' %}
+
+                        <span class="badge bg-success">
+                            Positive
+                        </span>
+
+                    {% elif feedback.sentiment == 'Negative' %}
+
+                        <span class="badge bg-danger">
+                            Negative
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge bg-secondary">
+                            Neutral
+                        </span>
+
+                    {% endif %}
+
+                    <br><br>
+
+                    <small class="text-muted">
+                        {{ feedback.created_at }}
+                    </small>
+
+                </div>
+
+            </div>
+
+        {% empty %}
+
+            <div class="alert alert-info mt-3">
+                No feedback available.
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

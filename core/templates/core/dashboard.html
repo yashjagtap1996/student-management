@@ -1,0 +1,147 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Attendance Dashboard{% endblock title %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="p-4 rounded text-white shadow"
+                 style="background: linear-gradient(135deg, #4e73df, #1cc88a);">
+                <h2 class="fw-bold mb-1">Attendance Dashboard</h2>
+                <p class="mb-0 opacity-75">
+                    Std-wise attendance comparison
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4 text-center">
+
+        <!-- Total Standards -->
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="text-muted">Total Standards</h6>
+                    <h3 class="fw-bold">{{ data|length }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Highest Percentage -->
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="text-muted">Highest %</h6>
+                    <h3 class="fw-bold text-success">
+                        {{ highest.percentage }}%
+                    </h3>
+                    <small class="text-muted">
+                        Std {{ highest.std }}
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lowest Percentage -->
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="text-muted">Lowest %</h6>
+                    <h3 class="fw-bold text-danger">
+                        {{ lowest.percentage }}%
+                    </h3>
+                    <small class="text-muted">
+                        Std {{ lowest.std }}
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Records -->
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="text-muted">Total Records</h6>
+                    <h3 class="fw-bold">
+                        {{ total_records_all }}
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Table Section -->
+    <div class="row">
+        <div class="col">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-3">Attendance Summary</h5>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle text-center">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Standard</th>
+                                    <th>Total Records</th>
+                                    <th>Present</th>
+                                    <th>Percentage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for row in data %}
+                                <tr>
+                                    <td class="fw-bold">{{ row.std }}</td>
+
+                                    <!-- Total -->
+                                    <td>
+                                        {% if row.total == 0 %}
+                                            <span class="text-muted">No Data</span>
+                                        {% else %}
+                                            {{ row.total }}
+                                        {% endif %}
+                                    </td>
+
+                                    <!-- Present -->
+                                    <td class="fw-semibold text-success">
+                                        {{ row.present }}
+                                    </td>
+
+                                    <!-- Percentage -->
+                                    <td>
+                                        {% if row.total == 0 %}
+                                            <span class="badge bg-secondary">N/A</span>
+                                        {% else %}
+                                            <span class="badge
+                                                {% if row.percentage >= 75 %}
+                                                    bg-success
+                                                {% elif row.percentage >= 50 %}
+                                                    bg-warning
+                                                {% else %}
+                                                    bg-danger
+                                                {% endif %}
+                                            ">
+                                                {{ row.percentage }}%
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}

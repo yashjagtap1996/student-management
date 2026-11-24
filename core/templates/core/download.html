@@ -1,0 +1,83 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Contact Us{% endblock title %}
+
+{% block content %}
+
+
+<div class="container mt-5">
+
+    <h3 class="mb-4 text-center">Attendance Report</h3>
+
+    <!-- Filter Form -->
+    <form method="get" class="row g-3 align-items-end mb-4">
+
+        <!-- Date Filter -->
+        <div class="col-md-4">
+            <label class="form-label">Select Date</label>
+            {{ filter.form.date }}
+        </div>
+
+        <!-- Std Filter -->
+        <div class="col-md-4">
+            <label class="form-label">Select Standard</label>
+            {{ filter.form.std }}
+        </div>
+
+        <!-- Buttons -->
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-primary me-2">
+                Filter
+            </button>
+
+            <button type="submit" name="download" value="1" class="btn btn-success">
+                Download CSV
+            </button>
+        </div>
+
+    </form>
+
+    <!-- Attendance Table -->
+    <table class="table table-bordered table-striped text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>Roll No</th>
+                <th>Name</th>
+                <th>Standard</th>
+                <th>Date</th>
+                <th>Present</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for att in filter.qs %}
+            <tr>
+                <td>{{ att.student.roll_no }}</td>
+                <td>{{ att.student.name }}</td>
+                <td>{{ att.student.std }}</td>
+                <td>{{ att.date }}</td>
+                <td>
+                    {% if att.present %}
+                        <span class="text-success fw-bold">Present</span>
+                    {% else %}
+                        <span class="text-danger fw-bold">Absent</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-muted">
+                    No attendance records found
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+
+
+
+
+
+{% endblock content %}

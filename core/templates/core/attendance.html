@@ -1,0 +1,95 @@
+{% extends 'core/base.html' %}
+{% block title %}Student Attendance{% endblock title %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <!-- Card -->
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white text-center">
+            <h4 class="mb-0">📋 Student Attendance</h4>
+        </div>
+
+        <div class="card-body">
+
+            <!-- 🔍 Filter Bar (django-filter) -->
+            <form method="get" class="row g-3 align-items-end mb-4">
+                <div class="col-md-4">
+                    <label class="fw-semibold text-muted mb-1">
+                        Filter by Standard
+                    </label>
+                    {{ filter.form.std }}
+                </div>
+
+                <div class="col-md-4">
+                    <button class="btn btn-primary btn-sm px-4">
+                        Apply
+                    </button>
+                    <a href="{% url 'mark_attendance' %}" class="btn btn-outline-secondary btn-sm px-4">
+                        Reset
+                    </a>
+                </div>
+            </form>
+
+            <!-- Attendance Form -->
+            <form method="POST">
+                {% csrf_token %}
+
+                <!-- Date -->
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Select Date</label>
+                        <input type="date" name="date" class="form-control" required ">
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle text-center">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Roll No</th>
+                                <th>Student Name</th>
+                                <th>Standard</th>
+                                <th>Present</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student in students %}
+                            <tr>
+                                <td>{{ student.roll_no }}</td>
+                                <td class="text-start">{{ student.name }}</td>
+                                <td>{{ student.std }}</td>
+                                <td>
+                                    <div class="form-check d-flex justify-content-center">
+                                        <input class="form-check-input" type="checkbox" name="{{ student.id }}">
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-muted">
+                                    No students found
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="submit" class="btn btn-success px-4">
+                        💾 Save Attendance
+                    </button>
+
+                    
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

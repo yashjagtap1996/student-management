@@ -1,0 +1,163 @@
+{% extends "core/base.html" %}
+{% block title %}Student Attendance Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+
+    <!-- ===================== -->
+    <!-- Attendance Check Form -->
+    <!-- ===================== -->
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow border-0">
+                <div class="card-header bg-primary text-white text-center">
+                    <h5 class="mb-0">Check Attendance</h5>
+                </div>
+
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label class="form-label">Roll No</label>
+                            <input type="number" name="roll_no" class="form-control"
+                                   placeholder="Enter Roll No" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Student Name</label>
+                            <input type="text" name="name" class="form-control"
+                                   placeholder="Enter Name" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Standard</label>
+                            <select name="standard" class="form-select" required>
+                                <option value="" disabled selected>-- Select Standard --</option>
+                                <option value="I">I</option>
+                                <option value="II">II</option>
+                                <option value="III">III</option>
+                                <option value="IV">IV</option>
+                                <option value="V">V</option>
+                                <option value="VI">VI</option>
+                                <option value="VII">VII</option>
+                                <option value="VIII">VIII</option>
+                                <option value="IX">IX</option>
+                                <option value="X">X</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            🔍 Check Attendance
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= -->
+    <!-- Message / Error -->
+    <!-- ================= -->
+    {% if message %}
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-6">
+            <div class="alert alert-warning text-center">
+                {{ message }}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- ===================== -->
+    <!-- Student Dashboard -->
+    <!-- ===================== -->
+    {% if attendances %}
+    <div class="row mt-5 text-center">
+
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm border-0 bg-light">
+                <div class="card-body">
+                    <h6>Total Days</h6>
+                    <h3>{{ total }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm border-0 bg-success text-white">
+                <div class="card-body">
+                    <h6>Present</h6>
+                    <h3>{{ present }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm border-0 bg-danger text-white">
+                <div class="card-body">
+                    <h6>Absent</h6>
+                    <h3>{{ absent }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm border-0 bg-info text-white">
+                <div class="card-body">
+                    <h6>Attendance %</h6>
+                    <h3>{{ percentage }}%</h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ===================== -->
+    <!-- Attendance Table -->
+    <!-- ===================== -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card shadow border-0">
+                <div class="card-header bg-success text-white">
+                    Attendance History
+                </div>
+
+                <div class="card-body p-0">
+                    <table class="table table-striped table-hover mb-0 text-center">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Roll No</th>
+                                <th>Name</th>
+                                <th>Standard</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for attendance in attendances %}
+                            <tr>
+                                <td>{{ attendance.student.roll_no }}</td>
+                                <td>{{ attendance.student.name }}</td>
+                                <td>{{ attendance.student.std }}</td>
+                                <td>{{ attendance.date }}</td>
+                                <td>
+                                    {% if attendance.present %}
+                                        <span class="badge bg-success">Present</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Absent</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

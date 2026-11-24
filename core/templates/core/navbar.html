@@ -1,0 +1,101 @@
+<nav class="navbar navbar-expand-lg bg-light">
+  <div class="container-fluid">
+    <!-- <a class="navbar-brand" href="#">Student Management</a> -->
+    <a class="navbar-brand fw-bold fs-4 text-primary d-flex align-items-center" href="{% url 'home' %}">
+      🎓<span class="ms-2">Student<span class="text-secondary">Management</span></span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'home' %}">🏡Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'contact' %}">📞Contact</a>
+        </li>
+         <li class="nav-item">
+              <a class="nav-link" href="{% url 'notice_list' %}">📢 Notice</a>
+            </li>
+          <li class="nav-item">
+    <a class="nav-link" href="{% url 'feedback' %}">
+        🧠 Feedback AI
+    </a>
+    
+</li>
+
+
+        {% if user.is_superuser %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            🧑‍💼Manage
+          </a>
+          <ul class="dropdown-menu shadow rounded-3 p-2" style="min-width: 230px;">
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center gap-3 py-2" href="{% url 'view_student' %}">
+                <img width="25" height="25" src="https://img.icons8.com/liquid-glass-color/32/person-male.png"
+                  alt="Student">
+                <span>Student</span>
+              </a>
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center gap-3 py-2" href="{% url 'mark_attendance' %}">
+                <img width="25" height="25"
+                  src="https://img.icons8.com/external-smashingstocks-glyph-smashing-stocks/66/external-checklist-sports-and-awards-smashingstocks-glyph-smashing-stocks.png"
+                  alt="Attendance">
+                <span>Attendance</span>
+              </a>
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center gap-3 py-2" href="{% url 'download_csv' %}">
+                <img width="22" height="22" src="https://img.icons8.com/ios-filled/50/downloads-folder--v1.png"
+                  alt="Download">
+                <span>Download CSV</span>
+              </a>
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center gap-3 py-2" href="{% url 'attendance_dashboard' %}">
+                <img width="22" height="22" src="https://img.icons8.com/pastel-glyph/64/laptop-metrics--v2.png"
+                  alt="Dashboard">
+                <span>Dashboard</span>
+              </a>
+            </li>
+
+           
+          </ul>
+
+          {% endif %}
+
+      </ul>
+      <div class="d-flex">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'student_attendance' %}" class="btn btn-outline-primary">
+              Check Attendance
+            </a>
+          </li>
+
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'signin' %}">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'signup' %}">SignUp</a>
+          </li>
+          {% endif %}
+
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
